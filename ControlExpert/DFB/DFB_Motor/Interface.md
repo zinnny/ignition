@@ -35,5 +35,6 @@ inside the DFB and paste `DFB_Motor.st` into it.
 | xRunLatch        | BOOL   | FALSE   | Internal run latch                            |
 | xFbkSeen         | BOOL   | FALSE   | Feedback has been seen during this run        |
 | xFault           | BOOL   | FALSE   | Internal fault latch                          |
+| xIlkLatch        | BOOL   | FALSE   | Interlock trip latch                          |
 | iFaultCode       | INT    | 0       | Internal fault code                           |
 | diRunSeconds     | DINT   | 0       | Run-time counter (retained on warm restart)   |

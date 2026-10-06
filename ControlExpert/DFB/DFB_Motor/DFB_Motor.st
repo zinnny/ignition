@@ -11,6 +11,14 @@ IF rtReset.Q THEN
     iFaultCode := 0;
 END_IF;
 
+(* ---- Interlock latch ---- *)
+(* Trip latches; reset only clears it once the interlock is healthy. *)
+IF NOT i_xInterlockOk THEN
+    xIlkLatch := TRUE;
+ELSIF rtReset.Q THEN
+    xIlkLatch := FALSE;
+END_IF;
+
 (* ---- Feedback supervision ---- *)
 (* Mismatch between command and feedback for longer than the timeout. *)
 (* Evaluated before the latch so the code reflects the previous scan.  *)
@@ -33,8 +41,8 @@ END_IF;
 
 (* ---- Run latch (stop dominant) ---- *)
 (* Permissives (TRUE = inhibit) drop the command; a new start edge *)
-(* is needed once they clear.                                       *)
-IF i_xStopCmd OR i_xPermissives OR NOT i_xInterlockOk OR xFault THEN
+(* is accepted as soon as they clear. Interlock trips need a reset. *)
+IF i_xStopCmd OR i_xPermissives OR xIlkLatch OR xFault THEN
     xRunLatch := FALSE;
 ELSIF rtStart.Q THEN
     xRunLatch := TRUE;
@@ -55,5 +63,6 @@ END_IF;
 q_xRunCmd    := xRunLatch;
 q_xRunning   := xRunLatch AND i_xRunFbk;
 q_xFault     := xFault;
+q_xIlkTripped := xIlkLatch;
 q_iFaultCode := iFaultCode;
 q_rRunHours  := DINT_TO_REAL(diRunSeconds) / 3600.0;
