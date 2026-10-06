@@ -32,7 +32,9 @@ IF tonFbk.Q AND NOT xFault THEN
 END_IF;
 
 (* ---- Run latch (stop dominant) ---- *)
-IF i_xStopCmd OR NOT i_xInterlockOk OR xFault THEN
+(* Permissives (TRUE = inhibit) drop the command; a new start edge *)
+(* is needed once they clear.                                       *)
+IF i_xStopCmd OR i_xPermissives OR NOT i_xInterlockOk OR xFault THEN
     xRunLatch := FALSE;
 ELSIF rtStart.Q THEN
     xRunLatch := TRUE;

@@ -10,7 +10,8 @@ inside the DFB and paste `DFB_Motor.st` into it.
 | i_xStartCmd      | BOOL | FALSE   | Start request (rising edge)                     |
 | i_xStopCmd       | BOOL | FALSE   | Stop request (level, stop dominant)             |
 | i_xRunFbk        | BOOL | FALSE   | Contactor / drive running feedback              |
-| i_xInterlockOk   | BOOL | TRUE    | Permissive; FALSE stops the motor (no fault)    |
+| i_xPermissives   | BOOL | FALSE   | Non-safety inhibit; TRUE removes run command (no fault) |
+| i_xInterlockOk   | BOOL | TRUE    | FALSE stops the motor (no fault)                |
 | i_xReset         | BOOL | FALSE   | Fault reset (rising edge)                       |
 | i_tFbkTimeout    | TIME | t#3s    | Max command/feedback mismatch before faulting   |
 
