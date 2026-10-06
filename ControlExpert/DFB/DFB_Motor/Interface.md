@@ -10,9 +10,9 @@ inside the DFB and paste `DFB_Motor.st` into it.
 | i_xStartCmd      | BOOL | FALSE   | Start request (rising edge)                     |
 | i_xStopCmd       | BOOL | FALSE   | Stop request (level, stop dominant)             |
 | i_xRunFbk        | BOOL | FALSE   | Contactor / drive running feedback              |
-| i_xPermissives   | BOOL | FALSE   | Non-safety inhibit; TRUE removes run command (no fault) |
-| i_xInterlockOk   | BOOL | TRUE    | FALSE stops the motor (no fault)                |
-| i_xReset         | BOOL | FALSE   | Fault reset (rising edge)                       |
+| i_xPermissives   | BOOL | FALSE   | Non-safety inhibit; TRUE removes run command, no reset needed |
+| i_xInterlockOk   | BOOL | TRUE    | FALSE trips and latches; needs reset before a new start |
+| i_xReset         | BOOL | FALSE   | Fault / interlock reset from SCADA (rising edge) |
 | i_tFbkTimeout    | TIME | t#3s    | Max command/feedback mismatch before faulting   |
 
 ## Outputs
@@ -21,6 +21,7 @@ inside the DFB and paste `DFB_Motor.st` into it.
 | q_xRunCmd        | BOOL | FALSE   | Run command to contactor / drive                |
 | q_xRunning       | BOOL | FALSE   | Commanded AND feedback present                  |
 | q_xFault         | BOOL | FALSE   | Latched fault                                   |
+| q_xIlkTripped    | BOOL | FALSE   | Latched interlock trip, awaiting reset          |
 | q_iFaultCode     | INT  | 0       | 0 none, 1 fail to start, 2 feedback lost, 3 uncommanded run |
 | q_rRunHours      | REAL | 0.0     | Accumulated run hours                           |
 
